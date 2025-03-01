@@ -29,9 +29,9 @@ public class Comment {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    private String text;
-
     private Long userId;
+
+    private String text;
 
     private Instant createdAt;
 }

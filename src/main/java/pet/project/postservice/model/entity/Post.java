@@ -28,14 +28,12 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull(message = "author_id must not be null")
     private Long authorId;
 
     private String content;
 
     private String imageUrl;
 
-    @NotNull(message = "created_at must not be null")
     private Instant createdAt;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
