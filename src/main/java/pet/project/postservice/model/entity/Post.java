@@ -26,7 +26,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-@Table(name = "post")
+@Table(name = "posts")
 public class Post {
 
     @Id

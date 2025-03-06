@@ -23,7 +23,7 @@ import java.time.Instant;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "like")
+@Table(name = "likes")
 public class Like {
 
     @Id
@@ -31,8 +31,7 @@ public class Like {
     private long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "post_id")
-    @Column(nullable = false)
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @Column(nullable = false)
