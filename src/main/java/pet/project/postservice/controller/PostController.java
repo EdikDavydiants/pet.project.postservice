@@ -2,6 +2,8 @@ package pet.project.postservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -22,7 +24,14 @@ public class PostController {
     @PostMapping("/new")
     public PostDto createPost(@RequestHeader String authHeader, @Valid @RequestBody NewPostDtoRequest request) {
 
-        long user_id = extractIdFromJwt(extractTokenFromHeader(authHeader));
-        return postService.createPost(user_id, request);
+        long userId = extractIdFromJwt(extractTokenFromHeader(authHeader));
+        return postService.createPost(userId, request);
     }
+
+    @GetMapping("/{postId}")
+    public PostDto getPost(@PathVariable long postId) {
+
+        return postService.getPost(postId);
+    }
+
 }

@@ -4,8 +4,8 @@ import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import pet.project.postservice.exception.AuthHeaderIsMissing;
-import pet.project.postservice.exception.WrongTokenType;
+import pet.project.postservice.exception.AuthHeaderIsMissingException;
+import pet.project.postservice.exception.WrongTokenTypeException;
 
 import javax.crypto.SecretKey;
 
@@ -38,10 +38,10 @@ public class JwtUtils {
 
     public static String extractTokenFromHeader(String authHeader) {
         if(authHeader == null) {
-            throw new AuthHeaderIsMissing(AUTH_HEADER_IS_MISSING);
+            throw new AuthHeaderIsMissingException(AUTH_HEADER_IS_MISSING);
         }
         if(!authHeader.startsWith("Bearer ")) {
-            throw new WrongTokenType(WRONG_TOKEN_TYPE);
+            throw new WrongTokenTypeException(WRONG_TOKEN_TYPE);
         }
         return authHeader.substring(7);
     }

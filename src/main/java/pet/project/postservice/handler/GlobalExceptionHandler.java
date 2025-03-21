@@ -4,9 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import pet.project.postservice.exception.AuthHeaderIsMissing;
+import pet.project.postservice.exception.AuthHeaderIsMissingException;
 import pet.project.postservice.exception.BadRequestException;
-import pet.project.postservice.exception.WrongTokenType;
+import pet.project.postservice.exception.PostNotFoundException;
+import pet.project.postservice.exception.WrongTokenTypeException;
 import pet.project.postservice.model.dto.GeneralErrorDtoResponse;
 
 @ControllerAdvice
@@ -34,8 +35,8 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-    @ExceptionHandler(WrongTokenType.class)
-    public ResponseEntity<GeneralErrorDtoResponse> handleWrongTokenTypeException(WrongTokenType exception) {
+    @ExceptionHandler(WrongTokenTypeException.class)
+    public ResponseEntity<GeneralErrorDtoResponse> handleWrongTokenTypeException(WrongTokenTypeException exception) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(GeneralErrorDtoResponse.builder()
@@ -45,13 +46,24 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
-    @ExceptionHandler(AuthHeaderIsMissing.class)
-    public ResponseEntity<GeneralErrorDtoResponse> handleAuthHeaderIsMissingException(AuthHeaderIsMissing exception) {
+    @ExceptionHandler(AuthHeaderIsMissingException.class)
+    public ResponseEntity<GeneralErrorDtoResponse> handleAuthHeaderIsMissingException(AuthHeaderIsMissingException exception) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(GeneralErrorDtoResponse.builder()
                         .status(HttpStatus.UNAUTHORIZED.value())
                         .type("AuthHeaderIsMissingError")
+                        .message(exception.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<GeneralErrorDtoResponse> handlePostNotFoundException(PostNotFoundException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(GeneralErrorDtoResponse.builder()
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .type("PostNotFoundError")
                         .message(exception.getMessage())
                         .build());
     }

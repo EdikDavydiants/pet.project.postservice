@@ -7,4 +7,6 @@ public class ErrorMessagesUtil {
     public static final String AUTH_HEADER_IS_MISSING = "Authorization header is missing!";
 
     public static final String FORBIDDEN_REQUEST = "Forbidden request!";
+
+    public static final String POST_NOT_FOUND = "Post with such id does not exist!";
 }

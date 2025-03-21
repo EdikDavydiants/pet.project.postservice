@@ -2,6 +2,8 @@ package pet.project.postservice.model.dto;
 
 import lombok.Builder;
 
+import java.util.List;
+
 @Builder
 public record PostDto(
 
@@ -15,8 +17,10 @@ public record PostDto(
 
         String createdAt,
 
-        int likesCount,
+        Long likesCount,
 
-        int commentsCount
+        Long commentsCount,
+
+        List<CommentDto> comments
 ) {
 }
