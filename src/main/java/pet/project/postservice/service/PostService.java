@@ -2,8 +2,10 @@ package pet.project.postservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pet.project.postservice.exception.ActionNotAllowedException;
 import pet.project.postservice.exception.PostNotFoundException;
 import pet.project.postservice.model.dto.PostDto;
+import pet.project.postservice.model.dto.SimpleMessageDto;
 import pet.project.postservice.model.dto.request.NewPostDtoRequest;
 import pet.project.postservice.model.entity.Comment;
 import pet.project.postservice.model.entity.Post;
@@ -13,7 +15,10 @@ import pet.project.postservice.repository.PostRepository;
 
 import java.util.List;
 
-import static pet.project.postservice.constant.ErrorMessagesUtil.POST_NOT_FOUND;
+import static pet.project.postservice.constant.ErrorMessagesUtil.FORBIDDEN_REQUEST;
+import static pet.project.postservice.constant.ErrorMessagesUtil.NOT_FOUND;
+import static pet.project.postservice.constant.ErrorMessagesUtil.SUCCESSFUL_DELETING;
+import static pet.project.postservice.constant.ErrorMessagesUtil.combine;
 import static pet.project.postservice.mapper.PostMappers.mapNewPostDtoRequestToPost;
 import static pet.project.postservice.mapper.PostMappers.mapPostToPostDto;
 
@@ -35,7 +40,7 @@ public class PostService {
     public PostDto getPost(long id) {
 
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new PostNotFoundException(POST_NOT_FOUND));
+                .orElseThrow(() -> new PostNotFoundException(combine("Post", NOT_FOUND)));
 
         List<Comment> comments = commentRepository.findTop10ByPostIdOrderByCreatedAt(id);
 
@@ -43,5 +48,18 @@ public class PostService {
         long commentsCount = commentRepository.countByPostId(id);
 
         return mapPostToPostDto(post, likesCount, commentsCount, comments);
+    }
+
+    public SimpleMessageDto deletePost(long userId, long postId) {
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(combine("Post", NOT_FOUND)));
+
+        if(post.getAuthorId() != userId) {
+            throw new ActionNotAllowedException(FORBIDDEN_REQUEST);
+        }
+
+        postRepository.delete(post);
+        return new SimpleMessageDto(combine("Post", SUCCESSFUL_DELETING));
     }
 }
