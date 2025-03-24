@@ -1,6 +1,7 @@
 package pet.project.postservice.mapper;
 
 import pet.project.postservice.model.dto.CommentDto;
+import pet.project.postservice.model.dto.FeedDto;
 import pet.project.postservice.model.dto.PostDto;
 import pet.project.postservice.model.dto.request.NewPostDtoRequest;
 import pet.project.postservice.model.entity.Comment;

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import pet.project.postservice.exception.AuthHeaderIsMissingException;
 import pet.project.postservice.exception.BadRequestException;
+import pet.project.postservice.exception.NotFoundException;
 import pet.project.postservice.exception.PostNotFoundException;
 import pet.project.postservice.exception.WrongTokenTypeException;
 import pet.project.postservice.model.dto.GeneralErrorDtoResponse;
@@ -64,6 +65,17 @@ public class GlobalExceptionHandler {
                 .body(GeneralErrorDtoResponse.builder()
                         .status(HttpStatus.NOT_FOUND.value())
                         .type("PostNotFoundError")
+                        .message(exception.getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<GeneralErrorDtoResponse> handleNotFoundException(NotFoundException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(GeneralErrorDtoResponse.builder()
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .type("NotFoundError")
                         .message(exception.getMessage())
                         .build());
     }

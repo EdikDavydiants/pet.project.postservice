@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pet.project.postservice.model.dto.FeedDto;
 import pet.project.postservice.model.dto.PostDto;
 import pet.project.postservice.model.dto.SimpleMessageDto;
 import pet.project.postservice.model.dto.request.NewPostDtoRequest;
@@ -41,5 +43,11 @@ public class PostController {
 
         long userId = extractIdFromJwt(extractTokenFromHeader(authHeader));
         return postService.deletePost(userId, postId);
+    }
+
+    @GetMapping("/{userId}/feed")
+    public FeedDto getFeed(@PathVariable long userId, @RequestParam int page) {
+
+        return postService.getFeed(userId, page);
     }
 }
