@@ -1,6 +1,7 @@
 package pet.project.postservice.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -23,5 +24,13 @@ public class LikeController {
 
         long userId = extractIdFromJwt(extractTokenFromHeader(authHeader));
         return likeService.likePost(userId, postId);
+    }
+
+    @DeleteMapping("/{postId}/like")
+    public SimpleMessageDto removeLikeFromPost(@RequestHeader(value = "Authorization") String authHeader,
+                                     @PathVariable long postId) {
+
+        long userId = extractIdFromJwt(extractTokenFromHeader(authHeader));
+        return likeService.removeLikeFromPost(userId, postId);
     }
 }

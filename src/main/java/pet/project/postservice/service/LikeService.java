@@ -2,6 +2,7 @@ package pet.project.postservice.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pet.project.postservice.exception.NotFoundException;
 import pet.project.postservice.exception.PostNotFoundException;
 import pet.project.postservice.model.dto.SimpleMessageDto;
 import pet.project.postservice.model.entity.Like;
@@ -13,6 +14,7 @@ import java.time.Instant;
 
 import static pet.project.postservice.constant.ErrorMessagesUtil.ALREADY_EXISTS;
 import static pet.project.postservice.constant.ErrorMessagesUtil.NOT_FOUND;
+import static pet.project.postservice.constant.ErrorMessagesUtil.SUCCESSFUL_DELETING;
 import static pet.project.postservice.constant.ErrorMessagesUtil.SUCCESSFUL_SAVING;
 import static pet.project.postservice.constant.ErrorMessagesUtil.combine;
 
@@ -40,5 +42,14 @@ public class LikeService {
 
         likeRepository.save(newLike);
         return new SimpleMessageDto(combine("Like", SUCCESSFUL_SAVING));
+    }
+
+    public SimpleMessageDto removeLikeFromPost(long userId, long postId) {
+
+        Like like = likeRepository.findByPostIdAndUserId(postId, userId)
+                .orElseThrow(() -> new NotFoundException(combine("Like", NOT_FOUND)));
+
+        likeRepository.delete(like);
+        return new SimpleMessageDto(combine("Like", SUCCESSFUL_DELETING));
     }
 }
