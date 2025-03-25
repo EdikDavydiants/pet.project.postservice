@@ -5,9 +5,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import pet.project.postservice.exception.ActionNotAllowedException;
 import pet.project.postservice.exception.NotFoundException;
 import pet.project.postservice.model.dto.CommentDto;
 import pet.project.postservice.model.dto.PostCommentsDto;
+import pet.project.postservice.model.dto.SimpleMessageDto;
 import pet.project.postservice.model.entity.Comment;
 import pet.project.postservice.model.entity.Post;
 import pet.project.postservice.repository.CommentRepository;
@@ -16,7 +18,9 @@ import pet.project.postservice.repository.PostRepository;
 import java.time.Instant;
 import java.util.List;
 
+import static pet.project.postservice.constant.ErrorMessagesUtil.FORBIDDEN_REQUEST;
 import static pet.project.postservice.constant.ErrorMessagesUtil.NOT_FOUND;
+import static pet.project.postservice.constant.ErrorMessagesUtil.SUCCESSFUL_DELETING;
 import static pet.project.postservice.constant.ErrorMessagesUtil.combine;
 import static pet.project.postservice.mapper.CommentMappers.mapCommentListToCommentDtoList;
 import static pet.project.postservice.mapper.CommentMappers.mapCommentToCommentDto;
@@ -63,5 +67,21 @@ public class CommentService {
                 .comments(commentDtoList)
                 .count(commentDtoList.size())
                 .build();
+    }
+
+    public SimpleMessageDto deleteComment(long userId, long commentId) {
+
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new NotFoundException(combine("Comment", NOT_FOUND)));
+
+        long postAuthorId = comment.getPost().getAuthorId();
+        long commentAuthorId = comment.getUserId();
+
+        if (userId != postAuthorId || userId != commentAuthorId) {
+            throw new ActionNotAllowedException(FORBIDDEN_REQUEST);
+        }
+
+        commentRepository.delete(comment);
+        return new SimpleMessageDto(combine("Comment", SUCCESSFUL_DELETING));
     }
 }

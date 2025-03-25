@@ -2,6 +2,7 @@ package pet.project.postservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pet.project.postservice.model.dto.CommentDto;
 import pet.project.postservice.model.dto.PostCommentsDto;
+import pet.project.postservice.model.dto.SimpleMessageDto;
 import pet.project.postservice.model.dto.request.NewCommentDtoRequest;
 import pet.project.postservice.service.CommentService;
 
@@ -36,5 +38,12 @@ public class CommentController {
     public PostCommentsDto getPostComments(@PathVariable long postId, @RequestParam int page) {
 
         return commentService.getPostComments(postId, page);
+    }
+
+    @DeleteMapping("/comments/{commentId}")
+    public SimpleMessageDto deleteComment(@RequestParam String authHeader, @PathVariable long commentId) {
+
+        long userId = extractIdFromJwt(extractTokenFromHeader(authHeader));
+        return commentService.deleteComment(userId, commentId);
     }
 }
