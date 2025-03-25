@@ -14,7 +14,11 @@ public class ErrorMessagesUtil {
 
     public static final String NOT_FOUND = "hasn't been found!";
 
+    public static final String ALREADY_EXISTS = "already exists!";
+
     public static final String SUCCESSFUL_DELETING = "has been successfully deleted.";
+
+    public static final String SUCCESSFUL_SAVING = "has been successfully saved.";
 
     public static final String UNKNOWN_ERROR = "Something went wrong...";
 

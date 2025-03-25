@@ -6,4 +6,6 @@ import pet.project.postservice.model.entity.Like;
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
     long countByPostId(Long postId);
+
+    boolean existsByPostIdAndUserId(Long postId, Long userId);
 }
