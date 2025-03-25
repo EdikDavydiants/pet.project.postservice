@@ -104,7 +104,7 @@ public class PostService {
                 .friendIdList();
 
         Slice<PostDto> postDtoSlice = postRepository.getFeed(
-                friendIdList, PageRequest.of(page, PAGE_SIZE, Sort.by("CreatedAt").descending()));
+                friendIdList, PageRequest.of(page, PAGE_SIZE, Sort.by("createdAt").descending()));
 
         return FeedDto.builder()
                 .posts(postDtoSlice.getContent())
