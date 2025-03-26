@@ -84,7 +84,7 @@ public class LikeService {
 
         var likingUserIdListEntityRequest = new HttpEntity<>(new LikingUserIdListDtoRequest(userIds.getContent()));
         ResponseEntity<LikingUserProfileListDtoResponse> usResponse = restTemplate.exchange(
-                        userServiceUrl + "/likes",
+                        userServiceUrl + "/profiles",
                         HttpMethod.POST,
                         likingUserIdListEntityRequest,
                         LikingUserProfileListDtoResponse.class);
